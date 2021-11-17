@@ -4,7 +4,7 @@
   import { readable } from 'svelte/store';
   import { onMount } from 'svelte';
   import DOMPurify from 'dompurify';
-  import marked from 'marked';
+  import { marked } from 'marked';
 
   window.DOMPurify = DOMPurify
 
