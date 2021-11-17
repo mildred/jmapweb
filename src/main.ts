@@ -1,7 +1,7 @@
 import App from './App.svelte';
-import jmap from 'jmap-client-ts/lib/index';
-import { FetchTransport } from 'jmap-client-ts/lib/utils/fetch-transport';
-import { XmlHttpRequestTransport } from 'jmap-client-ts/lib/utils/xml-http-request-transport';
+import jmap from '@ee-mail/jmap-client-ts/lib/index';
+import { FetchTransport } from '@ee-mail/jmap-client-ts/lib/utils/fetch-transport';
+import { XmlHttpRequestTransport } from '@ee-mail/jmap-client-ts/lib/utils/xml-http-request-transport';
 import { router } from 'tinro';
 
 router.mode.hash()
