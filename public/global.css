@@ -1,3 +1,4 @@
+/*
 html, body {
 	position: relative;
 	width: 100%;
@@ -61,3 +62,4 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
+*/
