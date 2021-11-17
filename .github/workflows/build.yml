@@ -18,8 +18,8 @@ jobs:
           node-version: '14'
           cache: 'npm'
       - run: npm install
-      - run: npm run build
-      - run: tar -C public -cJf jmapweb.tar.xz .
+
+      - run: ./release.sh
 
       - uses: ncipollo/release-action@v1
         if: startsWith(github.ref, 'refs/heads/')
