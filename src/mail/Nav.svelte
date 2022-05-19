@@ -5,6 +5,7 @@
   import NavContact from './NavContact.svelte';
 
   export let mailboxId = null;
+  export let contactId = null;
 
   export let jMail;
   const mailboxes = jMail.mailboxes
@@ -22,7 +23,7 @@
         <a href="/mail/mailboxes/{mailboxId}/compose/">Compose</a>
       </li>
       <li>
-        <a href="/mail/mailboxes/{mailboxId}/">List</a>
+        <a href="/mail/mailboxes/{mailboxId}/list/">List</a>
       </li>
       <li>
         <a href="/mail/mailboxes/{mailboxId}/all/">All</a>
@@ -41,10 +42,13 @@
         <a href="/mail/compose/">Compose</a>
       </li>
       <li>
-        <a href="/mail/">List</a>
+        <a href="/mail/list/">List</a>
       </li>
       <li>
         <a href="/mail/all/">All</a>
+      </li>
+      <li>
+        <a href="/mail/waiting/">Waiting</a>
       </li>
       <li>
         <a href="/mail/notflagged/$seen/">Unread</a>

@@ -8,6 +8,7 @@
   import Thread from './Thread.svelte';
   import MailboxIndex from './MailboxIndex.svelte';
   import MailboxContent from './MailboxContent.svelte';
+  import Filter from './Filter.svelte';
 
   export let jMail;
   export let mailboxId;
@@ -23,6 +24,10 @@
     <MailboxContent jMail={jMail} mailboxId={mailboxId} />
   </Route>
 
+  <Route path="/waiting/*">
+    <MailboxContent jMail={jMail} mailboxId={mailboxId} noflag="$jw-filtered" runFilters={true}/>
+  </Route>
+
   <Route path="/flagged/:flag/*" let:meta>
     <MailboxContent jMail={jMail} mailboxId={mailboxId} flag={meta.params.flag} />
   </Route>
@@ -35,7 +40,7 @@
     <Compose jMail={jMail} mailboxId={mailboxId || jMail.mailboxes.draftId} />
   </Route>
 
-  <Route path="/*">
+  <Route path="/list/*">
     <MailboxIndex jMail={jMail} mailboxId={mailboxId} />
   </Route>
 </Route>

@@ -4,7 +4,9 @@
   import { readable } from 'svelte/store';
   import { onMount } from 'svelte';
   import DOMPurify from 'dompurify';
+  import EmailIcon from './EmailIcon.svelte';
   import { marked } from 'marked';
+  import { futureVisibility } from '../utils/visibility.js';
 
   window.DOMPurify = DOMPurify
 
@@ -15,7 +17,26 @@
   let bodyPart = email.htmlBody.concat(email.textBody).filter(part => ALLOWED_TYPES.includes(part.type))[0]
   let bodyType = bodyPart && bodyPart.charset ? `${bodyPart.type}; charset=${bodyPart.charset}` : (bodyPart || {}).type
 
-  let body = bodyPart ? jMail.blob_data(jMail.accountId, bodyPart.blobId, bodyPart.name, bodyType, purify) : Promise.reject(null)
+  let articleElement
+  let articleVisible = new Promise((resolve, reject) => {
+    let observer = new IntersectionObserver((e) => {
+      observer.disconnect()
+      resolve(e)
+    }, {})
+    onMount(() => {
+      observer.observe(articleElement)
+    })
+  })
+
+  let body;
+  if (bodyPart) {
+    let futureArticleBody =new Promise((accept, reject) => { onMount(() => {
+    articleElement }) })
+    body = futureVisibility(futureArticleBody)
+      .then(e => jMail.blob_data(jMail.accountId, bodyPart.blobId, bodyPart.name, bodyType, purify))
+  } else {
+    body = Promise.reject(null)
+  }
 
   // TODO: use cssfilter to filter CSS
   // <https://github.com/leizongmin/js-css-filter> ?
@@ -300,13 +321,16 @@
 
 </script>
 
-<article>
-  <h1>
-    {#if !email.keywords["$seen"]}
-      [unread]
-    {/if}
-    {email.subject}
-  </h1>
+<article bind:this={articleElement}>
+  <div class="row">
+    <EmailIcon jMail={jMail} name={email.from[0].name} email={email.from[0].email} />
+    <h1>
+      {#if !email.keywords["$seen"]}
+        [unread]
+      {/if}
+      {email.subject}
+    </h1>
+  </div>
   <p>From: <em>{email.from[0].name} ({email.sentAt})</em></p>
   <p>Keywords: <em>{Object.keys(email.keywords).join(", ")}</em></p>
   {#if !email.keywords["$seen"]}
@@ -342,5 +366,11 @@
   iframe {
     width: 100%;
     border: none;
+  }
+
+  .row {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: baseline;
   }
 </style>

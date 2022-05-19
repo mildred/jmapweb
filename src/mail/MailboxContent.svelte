@@ -10,8 +10,9 @@
   export let mailboxId;
   export let noflag;
   export let flag;
+  export let runFilters = false;
 
-  const emails = readable([], set => {
+  const emails = readable(null, set => {
     jMail.req([
       ['Email/query', {
         accountId: jMail.accountId,
@@ -51,7 +52,11 @@
 <Nav jMail={jMail} mailboxId={mailboxId}/>
 
 <main>
-  {#each $emails as email}
-    <EmailBody jMail={jMail} email={email} />
-  {/each}
+  {#if $emails}
+    {#each $emails as email}
+      <EmailBody jMail={jMail} email={email} />
+    {/each}
+  {:else}
+    <p>Fetching emails...</p>
+  {/if}
 </main>
