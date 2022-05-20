@@ -280,20 +280,23 @@
   function markToReply(){
     updateKeywords({
       'keywords/$seen': true,
-      'keywords/$flagged': null,
-      'keywords/$toreply': true
+      'keywords/$flagged': true,
+      'keywords/$toreply': true,
+      'keywords/$forreference': null
     })
   }
 
   function unmarkToReply(){
     updateKeywords({
+      'keywords/$flagged': null,
       'keywords/$toreply': null
     })
   }
 
   function unmarkForReference(){
     updateKeywords({
-      'keywords/$flagged': null
+      'keywords/$flagged': null,
+      'keywords/$forreference': null
     })
   }
 
@@ -301,7 +304,8 @@
     updateKeywords({
       'keywords/$seen': true,
       'keywords/$toreply': null,
-      'keywords/$flagged': true
+      'keywords/$flagged': true,
+      'keywords/$forreference': true
     })
   }
 

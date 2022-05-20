@@ -61,8 +61,6 @@
 
 </script>
 
-<Nav jMail={jMail} mailboxId={mailboxId}/>
-
 <Route path="/*" let:meta>
   <main>
     <div class="unread">

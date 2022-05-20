@@ -71,10 +71,13 @@
     return () => {}
   })
 
-  function getEmailConfig($config, email){
-    let { byEmail } = $config
+  function getEmailConfig(configVal, email){
+    let { byEmail } = configVal
+    const catList = configVal.categories || config.defCategories
     byEmail ||= {}
-    return byEmail[email] || {}
+    let cfg = byEmail[email] || {}
+    cfg.category ||= catList[0]
+    return cfg
   }
 
   function setEmailCategory(email) {
@@ -98,15 +101,16 @@
 
 <Nav jMail={jMail} contactId={contactId}/>
 
-<main>
+<header>
   <h1><EmailIcon jMail={jMail} name={$contact.contactName} email={$contact.email} /></h1>
   <h1>{$contact.contactName}</h1>
+</header>
 
+<main>
   <ul class="email-config">
     {#each $contact.emails as email}
       <li>{email} -&gt;
         <select on:input={setEmailCategory(email)}>
-          <option value="">not classified</option>
           {#each ($config.categories || config.defCategories) as category}
             <option value={category} selected={getEmailConfig($config, email).category == category}>{category}</option>
           {/each}

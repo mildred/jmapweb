@@ -56,5 +56,6 @@
 }
 </style>
 
+<a href="/mail/emailaddr/{email}/">
 <div class="text-avatar" title={`${name} <${email}>`} style="--hue: {hue}; --hue2: {hue2}">{initials}</div>
-
+</a>

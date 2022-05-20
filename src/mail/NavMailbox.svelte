@@ -11,7 +11,7 @@
 </script>
 
 {#if mailbox != null}
-  <a href="/mail/mailboxes/{mailbox.id}/">{mailbox.name}</a>
+  <a href="/mail/mailboxes/{mailbox.id}/all/">{mailbox.name}</a>
 {/if}
 
 <ul>

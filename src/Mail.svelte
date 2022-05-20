@@ -6,13 +6,23 @@
   import { makeConfig } from './utils/config.js';
   import Nav from './mail/Nav.svelte';
   import Mailbox from './mail/Mailbox.svelte';
+  import MailboxList from './mail/MailboxList.svelte';
   import Thread from './mail/Thread.svelte';
   import ContactPage from './mail/ContactPage.svelte';
+  import EmailAddrPage from './mail/EmailAddrPage.svelte';
+  import ContactList from './mail/ContactList.svelte';
 
   export let jmap;
   export let session;
 
   let accountId = Object.keys(session.accounts)[0]
+
+  let errors = writable([])
+  //errors.subscribe(errs => {for(let e of errs) console.error(e)})
+  errors.push = function(err) {
+    console.error(err);
+    errors.update(errs => [...errs, err])
+  }
 
   let mailboxes = readable([], set => {
     jmap.req([
@@ -70,6 +80,7 @@
   //setTimeout(() => { config.update(conf => ({...conf, updatedAt: new Date().toString()})) }, 1000)
 
   let jMail = {
+    errors,
     mailboxes,
     contacts,
     accountId,
@@ -87,6 +98,13 @@
 
 {#if !$config.loaded }
   <p>loading config...</p>
+{:else if $errors.length > 0 }
+  <p>Errors, please reload...</p>
+  <ul>
+    {#each $errors as err}
+      <li>{err}</li>
+    {/each}
+  </ul>
 {:else}
 
 <Route path="/*" firstmatch>
@@ -95,12 +113,24 @@
     <Mailbox jMail={jMail} mailboxId={meta.params.mailboxId} />
   </Route>
 
+  <Route path="/mailboxes/*" let:meta>
+    <MailboxList jMail={jMail} />
+  </Route>
+
   <Route path="/threads/:threadId/*" let:meta>
     <Thread jMail={jMail} threadId={meta.params.threadId} />
   </Route>
 
   <Route path="/contacts/:contactId/*" let:meta>
     <ContactPage jMail={jMail} contactId={meta.params.contactId} />
+  </Route>
+
+  <Route path="/contacts/*" let:meta>
+    <ContactList jMail={jMail} />
+  </Route>
+
+  <Route path="/emailaddr/:emailaddr/*" let:meta>
+    <EmailAddrPage jMail={jMail} emailAddr={meta.params.emailaddr} />
   </Route>
 
   <Route path="/*" let:meta>
