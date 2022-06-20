@@ -135,7 +135,7 @@ export function makeConfig(jMail){
       let email = resp[2][1].list[0]
       let data = email ? JSON.parse(email.bodyValues['1'].value) : null
       let state = resp.get('3').state
-      let blobId = email.blobId
+      let blobId = email ? email.blobId : null
       let raw = {
         ...data,
         configState: state,
